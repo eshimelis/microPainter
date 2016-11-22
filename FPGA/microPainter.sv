@@ -7,34 +7,51 @@
 module microPainter(input logic clk, reset, aUnsync, bUnsync,
                     output logic state, read);
 
-        logic aDelayed, bDelayed, a, b, countEnable, countDirection;
-	logic state, read;
+    logic aDelayed, bDelayed, a, b, countEnable, countDirection;
 
-        // Synchronize encoder data
-        sync syncA(clk, reset, aUnsync, a);
-        sync syncB(clk, reset, bUnsync, b);
+    // Synchronize encoder data
+    sync syncA(clk, reset, aUnsync, a);
+    sync syncB(clk, reset, bUnsync, b);
 
-        // Produced delayed output
-        clockDelay clockDelayA(clk, reset, a, aDelayed);
-        clockDelay clockDelayB(clk, reset, b, bDelayed);
+    // Produced delayed output
+    clockDelay clockDelayA(clk, reset, a, aDelayed);
+    clockDelay clockDelayB(clk, reset, b, bDelayed);
 
 	assign countEnable = a^aDelayed^b^bDelayed;
 	assign countDirection = a^bDelayed;
 
-        logic [9:0] count;
+    logic [3:0] count;
 
-        always @(posedge clk, posedge reset)
-            begin
+    always @(posedge clk)
+        begin
+	if (reset)
+	    count <= 0;
+
+            else if (countEnable)
+                begin
+                if (countDirection) count <= count+1;
+                else count <= count-1;
+                end
+        end
+
+	always @(posedge countEnable)
+	    begin
 		if (reset)
-		    count <= 0;
-
-                else if (countEnable)
-                    begin
-                    if (countDirection) count <= count+1;
-                    else count <= count-1;
-                    end
-            end
-
+		    begin
+		        state <= 0;
+		        read <= 0;
+		    end
+		else if (count == 0)
+		    begin
+		    	read <= 1;
+		    	state <= countDirection;
+		    end
+		else
+		    begin
+		    	state <= countDirection;
+		    	read <= 0;
+		    end
+	    end
 	// Update current direction state output
 	always @(posedge read)
 	    begin
@@ -51,7 +68,7 @@ endmodule
 module fflop(input logic clk, reset, d,
 		    output logic q);
 
-	always_ff @(posedge clk, posedge reset)
+	always_ff @(posedge clk)
 		if (reset) q <= 1'b0;
 		else
 			q <= d;
@@ -76,7 +93,7 @@ endmodule
 module clockDelay(input logic clk, reset, d,
 		          output logic q);
 
-	always_ff @(posedge clk, posedge reset)
+	always_ff @(posedge clk)
 		if (reset) q <= 1'b0;
 		else
 			q <= d;

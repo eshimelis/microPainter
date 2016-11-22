@@ -12,7 +12,10 @@ add wave /testbench/mPainter/a
 add wave /testbench/mPainter/b
 add wave /testbench/mPainter/countEnable
 add wave /testbench/mPainter/countDirection
+add wave /testbench/mPainter/read
+add wave /testbench/mPainter/state
 add wave /testbench/mPainter/count
+
 
 # Reset encoder values
 force /testbench/mPainter/aUnsync 0
@@ -76,54 +79,6 @@ force /testbench/mPainter/aUnsync 0
 run 30
 force /testbench/mPainter/bUnsync 0
 run 300
-force /testbench/mPainter/bUnsync 1
-run 30
-force /testbench/mPainter/aUnsync 1
-run 30
-force /testbench/mPainter/bUnsync 0
-run 30
-force /testbench/mPainter/aUnsync 0
-run 30
-force /testbench/mPainter/bUnsync 1
-run 30
-force /testbench/mPainter/aUnsync 1
-run 30
-force /testbench/mPainter/bUnsync 0
-run 30
-force /testbench/mPainter/aUnsync 0
-run 30
-force /testbench/mPainter/bUnsync 1
-run 30
-force /testbench/mPainter/aUnsync 1
-run 30
-force /testbench/mPainter/bUnsync 0
-run 30
-force /testbench/mPainter/aUnsync 0
-run 30
-force /testbench/mPainter/bUnsync 1
-run 30
-force /testbench/mPainter/aUnsync 1
-run 30
-force /testbench/mPainter/bUnsync 0
-run 30
-force /testbench/mPainter/aUnsync 0
-run 30
-force /testbench/mPainter/bUnsync 1
-run 30
-force /testbench/mPainter/aUnsync 1
-run 30
-force /testbench/mPainter/bUnsync 0
-run 30
-force /testbench/mPainter/aUnsync 0
-run 30
-force /testbench/mPainter/bUnsync 1
-run 30
-force /testbench/mPainter/aUnsync 1
-run 30
-force /testbench/mPainter/bUnsync 0
-run 30
-force /testbench/mPainter/aUnsync 0
-run 30
 force /testbench/mPainter/bUnsync 1
 run 30
 force /testbench/mPainter/aUnsync 1
