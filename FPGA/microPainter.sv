@@ -5,7 +5,7 @@
 
 
 module microPainter(input logic clk, reset, aUnsync, bUnsync,
-                    output logic state, read);
+                    output logic state, read, debugA, debugB);
 
     logic aDelayed, bDelayed, a, b, countEnable, countDirection;
 
@@ -20,23 +20,27 @@ module microPainter(input logic clk, reset, aUnsync, bUnsync,
 	assign countEnable = a^aDelayed^b^bDelayed;
 	assign countDirection = a^bDelayed;
 
-    logic [3:0] count;
+    logic [9:0] count;
 
     always @(posedge clk)
-        begin
-	if (reset)
-	    count <= 0;
+		begin
+			if (~reset)
+				count <= 0;
 
-            else if (countEnable)
-                begin
-                if (countDirection) count <= count+1;
-                else count <= count-1;
-                end
-        end
+			else if (countEnable)
+				begin
+					if (countDirection) count <= count+1;
+					else count <= count-1;
+			end
+		end
+
+	// For debugging purposes
+	assign debugA = read;
+	assign debugB = a;
 
 	always @(posedge countEnable)
 	    begin
-		if (reset)
+		if (~reset)
 		    begin
 		        state <= 0;
 		        read <= 0;
@@ -52,24 +56,16 @@ module microPainter(input logic clk, reset, aUnsync, bUnsync,
 		    	read <= 0;
 		    end
 	    end
-	// Update current direction state output
-	always @(posedge read)
-	    begin
-		if (reset)
-		    state <= 0;
-		else
-		    state <= countDirection;
-	    end
 
 endmodule
 
 
 // Asynchronous reset Flip Flop
 module fflop(input logic clk, reset, d,
-		    output logic q);
+		       output logic q);
 
 	always_ff @(posedge clk)
-		if (reset) q <= 1'b0;
+		if (~reset) q <= 0;
 		else
 			q <= d;
 endmodule
@@ -77,7 +73,7 @@ endmodule
 
 //  Synchronizer
 module sync(input logic clk, reset, d,  // Unsynchronized input
-			      output logic q);	          // Synchronized input
+			   output logic q);	          // Synchronized input
 
 	// Logic to store intermediate value for second flop
 	logic intermediate;
@@ -94,7 +90,7 @@ module clockDelay(input logic clk, reset, d,
 		          output logic q);
 
 	always_ff @(posedge clk)
-		if (reset) q <= 1'b0;
+		if (~reset) q <= 0;
 		else
 			q <= d;
 endmodule
