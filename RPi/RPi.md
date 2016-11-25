@@ -15,7 +15,7 @@ Image processing (of file in directory), and LED interfacing through the RPi's b
  >> sudo ./dotStar
 
 # File Summaries
-* png2bmp.py
+* png2bmp.py 
  
  Python script utilizes Pillow library to load a .png image, scale the image appropriately (144 pixels tall), and convert the image to a .bmp file
 
@@ -40,7 +40,11 @@ Image processing (of file in directory), and LED interfacing through the RPi's b
  * FPGA Step Dir Pin: GPIO 22 (hp 15)
 
 # External Dependencies
-* Python and Pillow (Image Processing library)
+* Python (may need 3.4 (not 2.7 on the Pi)) and Pillow (Image Processing library)
 
   Used in png2bmp.py for image manipulation and conversion
 
+ #Changing Python version on Pi
+ * I used the first option in this link to change from 2.7 to 3.4
+
+ https://linuxconfig.org/how-to-change-from-default-to-alternative-python-version-on-debian-linux

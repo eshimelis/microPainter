@@ -1,14 +1,11 @@
 // dotStar.c
 // Austin Chun
 // Nov. 20th, 2016
-// E155 Final Projecy
+// E155 Final Project
 // Implement SPI protocol with dotStar LED strip
 // APA102 datasheet: https://cdn-shop.adafruit.com/datasheets/APA102.pdf
 
-     
-// #include <sys/mman.h>
-// #include <fcntl.h>
-// #include <unistd.h>
+    
 #include <stdio.h>
 #include <stdlib.h>
 #include "SPI.h"
@@ -17,8 +14,9 @@
 // Constants
 /////////////////////////////////////////////////////////////////////
 
-#define FPGA_STEPPED 27 // YELLOW
-#define FPGA_STEP_DIR 22 // BLUE
+// Arbitrary, can easilly change
+#define FPGA_STEPPED 27 
+#define FPGA_STEP_DIR 22 
 
 
 // Define RGB data type
@@ -39,7 +37,7 @@ typedef struct {
 
 /**
  * @brief      Reads RGB data from a bmp image file
- *
+ * @note       Assumes there is a file "image0.bmp" in the directory
  * @return     struct with RGB data, and image dimensions
  */
 RGBandSize readBMP(void)
@@ -52,7 +50,7 @@ RGBandSize readBMP(void)
     if(f == NULL){
         printf("ERROR: Null file");
     }
-    // Read 54-byte header
+    // Read 54-byte header (specific to bmp file format)
     unsigned char info[54];
     fread(info, sizeof(unsigned char), 54, f);
 
@@ -61,7 +59,7 @@ RGBandSize readBMP(void)
     int height = *(int*)&info[22];
     // Calculate padded row width (since bmp pad to make row multiple of 4 bytes)
     int row_padded = (width*3 + 3) & (~3);
-    // Calcualte total size in bytes
+    // Calcualte total size in bytes (3 times for RGB bytes per pixel)
     int size = 3 * width * height;
 
     // Single row to read off one row at a time
@@ -97,6 +95,7 @@ RGBandSize readBMP(void)
 }
 
 void main(void) {
+    
     printf("%s \n", "Start Lights");
 
     // Brightness level, 0-255, DO NO SET ABOVE 
@@ -105,6 +104,9 @@ void main(void) {
     // 1 = minimum brightness (off)
     // 255 = one less than full brightness
     unsigned short brightness = 60; 
+    ////////////////////////////////////////////
+    // ^^^^^^ USER DEFINED ^^^^^ 
+    ////////////////////////////////////////////
 
     //////////////////
     // Define Image //
@@ -116,8 +118,7 @@ void main(void) {
     unsigned char* RGBdata = image.RGB;
     // Starts at bottom left, goes down to up
 
-    int i;
-
+    int i; // Cause C is stupid
 
     ////////////////////
     // Initialize SPI //
@@ -125,7 +126,8 @@ void main(void) {
     printf("%s \n", "Initialize SPI");
     pioInit();
     spiInit(6000000, 0); // Initialize the SPI:
-                        // 100 kHz clk, default settings
+                        // 6 MHz clk, default settings
+                        // note: I have ran it up to 8 MHz
 
     // Initialize column
     // note: column can be negative, to indicate before start of frame
@@ -141,7 +143,7 @@ void main(void) {
 
   // FPGA Connection
       stepped = digitalRead(FPGA_STEPPED);
-
+      // "Finite-State Machine" (s0: looking for posedge, s1: looking for neg edge)
       if(justStepped || !stepped){
         // Only update LED's when step is made
         if(!stepped){ // YELLOW WIRE
@@ -155,11 +157,11 @@ void main(void) {
       // Thus it has registered a step, and shall proceed
 
       // Update column position
-      if(digitalRead(FPGA_STEP_DIR)) ++column; // BLUE WIRE
+      if(digitalRead(FPGA_STEP_DIR)) ++column; // (___) WIRE
       else                           --column; 
 
 
-  // Time Stepping
+  // Time Stepping (just for tests)
       // usleep(10000); // Delay 2s
       // ++column; // increment column
 
