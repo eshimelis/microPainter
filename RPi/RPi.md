@@ -5,10 +5,10 @@ Image processing (of file in directory), and LED interfacing through the RPi's b
 
 # Command line interface
 (Assumes there exists some desired image in directory called "image0.png")
->> python png2bmp.py
+ >> python png2bmp.py
 (Prints stuff)
->> make
->> sudo ./dotStar
+ >> make
+ >> sudo ./dotStar
 
 # File Summaries
 * png2bmp.py
@@ -24,13 +24,13 @@ Image processing (of file in directory), and LED interfacing through the RPi's b
 * RPi powered by micro-usb wall charger
 * 5V power supply plugged into wall (stripped power cord screwed into terminals)
 * LED strip powered by 5V (red and black wires screwed into power supply)
-* RPi pins (pinout: https://az835927.vo.msecnd.net/sites/iot/Resources/images/PinMappings/RP2_Pinout.png)
-** LED Blue Wire (Ground): Connect to any ground of the RPi (I use header pin (hp) 9)
-** LED Green Wire (Data): GPIO 10 (SPI0 MOSI) (hp 19)
-** LED Red Wire (Clk): GPIO 11 (SPI0 SCLK) (hp 21)
-** LED Black Wire (5V): Unconnected --
-** FPGA Stepped Pin: GPIO 27 (hp 13)
-** FPGA Step Dir Pin: GPIO 22 (hp 15)
+* RPi pins [pinout](https://az835927.vo.msecnd.net/sites/iot/Resources/images/PinMappings/RP2_Pinout.png)
+ * LED Blue Wire (Ground): Connect to any ground of the RPi (I use header pin (hp) 9)
+ * LED Green Wire (Data): GPIO 10 (SPI0 MOSI) (hp 19)
+ * LED Red Wire (Clk): GPIO 11 (SPI0 SCLK) (hp 21)
+ * LED Black Wire (5V): Unconnected --
+ * FPGA Stepped Pin: GPIO 27 (hp 13)
+ * FPGA Step Dir Pin: GPIO 22 (hp 15)
 
 # External Dependencies
 * Python and Pillow (Image Processing library)
