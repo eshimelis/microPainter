@@ -5,20 +5,27 @@ Image processing (of file in directory), and LED interfacing through the RPi's b
 
 # Command line interface
 (Assumes there exists some desired image in directory called "image0.png")
+
  ">> python png2bmp.py"
+
 (Prints stuff)
+
  ">> make"
+
  ">> sudo ./dotStar"
 
 # File Summaries
 * png2bmp.py
- * Python script utilizes Pillow library to load a .png image, scale the image appropriately (144 pixels tall), and convert the image to a .bmp file
+ 
+ Python script utilizes Pillow library to load a .png image, scale the image appropriately (144 pixels tall), and convert the image to a .bmp file
 
 * dotStar.c
- * Main function for interfacing with the LEDs. Reads the file "image0.bmp", reads the image dimensions from the header bytes, then loads the RGB data into a char[]. Then initializes a SPI interface using the RPi SPI0, and outputs columns when "stepped"
+ 
+ Main function for interfacing with the LEDs. Reads the file "image0.bmp", reads the image dimensions from the header bytes, then loads the RGB data into a char[]. Then initializes a SPI interface using the RPi SPI0, and outputs columns when "stepped"
 
 * SPI.h
- * Set-up file for GPIO and SPI interfacing. Defines functions like spiInit(), pinMode, etc.
+ 
+ Set-up file for GPIO and SPI interfacing. Defines functions like spiInit(), pinMode, etc.
 
 # Hardware Connections
 * RPi powered by micro-usb wall charger
@@ -34,5 +41,6 @@ Image processing (of file in directory), and LED interfacing through the RPi's b
 
 # External Dependencies
 * Python and Pillow (Image Processing library)
+
   Used in png2bmp.py for image manipulation and conversion
 
