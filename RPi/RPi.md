@@ -6,13 +6,13 @@ Image processing (of file in directory), and LED interfacing through the RPi's b
 # Command line interface
 (Assumes there exists some desired image in directory called "image0.png")
 
- ">> python png2bmp.py"
+ >> python png2bmp.py
 
 (Prints stuff)
 
- ">> make"
+ >> make
 
- ">> sudo ./dotStar"
+ >> sudo ./dotStar
 
 # File Summaries
 * png2bmp.py
