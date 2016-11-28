@@ -5,7 +5,7 @@
 // Implement SPI protocol with dotStar LED strip
 // APA102 datasheet: https://cdn-shop.adafruit.com/datasheets/APA102.pdf
 
-    
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "SPI.h"
@@ -15,8 +15,8 @@
 /////////////////////////////////////////////////////////////////////
 
 // Arbitrary, can easilly change
-#define FPGA_STEPPED 27 
-#define FPGA_STEP_DIR 22 
+#define FPGA_STEPPED 27
+#define FPGA_STEP_DIR 22
 
 
 // Define RGB data type
@@ -85,7 +85,7 @@ RGBandSize readBMP(void)
             data[(i * 3* width) + k] = singlerow[k];
         }
     }
-    
+
     // Clean-up
     free(singlerow);
 
@@ -95,17 +95,17 @@ RGBandSize readBMP(void)
 }
 
 void main(void) {
-    
+
     printf("%s \n", "Start Lights");
 
-    // Brightness level, 0-255, DO NO SET ABOVE 
+    // Brightness level, 0-255, DO NO SET ABOVE
     // 0 = full brightness
     // Intentionally 0, for manual brightness adjustment
     // 1 = minimum brightness (off)
     // 255 = one less than full brightness
-    unsigned short brightness = 60; 
+    unsigned short brightness = 60;
     ////////////////////////////////////////////
-    // ^^^^^^ USER DEFINED ^^^^^ 
+    // ^^^^^^ USER DEFINED ^^^^^
     ////////////////////////////////////////////
 
     //////////////////
@@ -134,47 +134,50 @@ void main(void) {
     int column = -1;
 
     // Allows for fast sampling time (like FSM)
-    int justStepped = 0;
+    int prevStep = 0;
     int stepped = 0;
+    int direction = 0;
 
     // Update LEDs until reach end of image
     while(column < imageWidth){
 
+        // FPGA Connection
+        stepped = digitalRead(FPGA_STEPPED);
 
-  // FPGA Connection
-      stepped = digitalRead(FPGA_STEPPED);
-      // "Finite-State Machine" (s0: looking for posedge, s1: looking for neg edge)
-      if(justStepped || !stepped){
-        // Only update LED's when step is made
-        if(!stepped){ // YELLOW WIRE
-          justStepped = 0;
+        // "Finite-State Machine" (s0: looking for posedge, s1: looking for neg edge)
+        if(!prevStep && stepped){
+            // Only update LED's when step is made
+            // if(stepped){ // YELLOW WIRE
+            //   prevStep = 1;
+            // }
+            // usleep(1000); // Wait 1ms before next sample
+            direction = digitalRead(FPGA_STEP_DIR);
+            printf("Dir: %d\n", direction);
+            if(direction) ++column; // (___) WIRE
+            else                           --column;
         }
-        // usleep(1000); // Wait 1ms before next sample
-        continue;
-      }
 
-      justStepped = 1;
+        // printf("%s %d\n", "Column: ",column);
+
+        prevStep = stepped;
       // Thus it has registered a step, and shall proceed
 
       // Update column position
-      if(digitalRead(FPGA_STEP_DIR)) ++column; // (___) WIRE
-      else                           --column; 
-
+    //   if(digitalRead(FPGA_STEP_DIR)) ++column; // (___) WIRE
+    //   else                           --column;
 
   // Time Stepping (just for tests)
-      // usleep(10000); // Delay 2s
-      // ++column; // increment column
+    //   usleep(5000); // Delay 2s
+    //   ++column; // increment column
 
       // Do nothing if out of picture frame
       if(column < 0) {
-        continue; 
+        continue;
       }
-      // Update LEDs 
-      printf("%s %d\n", "Column: ",column);
-      
+
       // Send 32-bit start Frame
       for(i = 0; i < 4; i++){
-        spiSendByte(0x00); 
+        spiSendByte(0x00);
       }
       // printf("%s \n", "Sent start bit");
       int row;
@@ -183,7 +186,7 @@ void main(void) {
       // Loop through rows, from bottom to top
       for(row = 0; row < imageHeight; ++row){
         // 3-bit start frame, and 5-bit brightness (fixed at FULL b/c hardware problems)
-        spiSendByte(0xFF); 
+        spiSendByte(0xFF);
 
         // printf("%d,%d: %x,%x,%x\n",row, column, RGBdata[3*(row*imageWidth + column) + 0], RGBdata[3*(row*imageWidth + column) + 1], RGBdata[3*(row*imageWidth + column) + 2]);
         // Adjust color data for brightness
@@ -204,8 +207,8 @@ void main(void) {
       // Send 72-bit end Frame
       // printf("%s %d\n", "Send End: ",column);
       for(i = 0; i < 9; ++i) {
-        spiSendByte(0xFF); 
-      }  
+        spiSendByte(0xFF);
+      }
 
     }
 
@@ -215,4 +218,3 @@ void main(void) {
     free(RGBdata);
     return;
 }
-
