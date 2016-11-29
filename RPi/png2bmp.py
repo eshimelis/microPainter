@@ -15,13 +15,13 @@ img = img.convert("RGBA")
 # Scaling factor
 (width, height) = img.size
 # Max height of 144 pixels
-scale = 144.0 / height 
+scale = 144.0 / height
 print ("Scale: ", scale)
 newHeight = scale*height
 # Adjust horizontal resolution
 newWidth = 3.0*scale*width
 
-print("Height: ", newHeight, ", Width: " newWidth)
+print("Height: ", newHeight, ", Width: ", newWidth)
 
 
 # Scales image to max height 144, and some ratio for width to keep high resolution horizontally
