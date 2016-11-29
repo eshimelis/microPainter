@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-# Make files
-make all
+make
 
-# Convert png to bmp
 python png2bmp.py
 
-# Run LED
-./dotStar
+sudo ./dotStar
+
