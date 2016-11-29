@@ -1,9 +1,9 @@
-# Makefile dotStar/SPI
+# Makefile microPainter/SPI
 
-all: dotStar
+all: microPainter
 
-dotStar: dotStar.c SPI.h
-	gcc -g -o dotStar dotStar.c
+dotStar: microPainter.c SPI.h
+	gcc -g -o microPainter microPainter.c
 
 clean:
-	rm -f dotStar
+	rm -f microPainter

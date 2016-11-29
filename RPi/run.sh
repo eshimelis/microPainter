@@ -7,4 +7,4 @@ make all
 python png2bmp.py
 
 # Run LED
-sudo ./dotStar
+sudo ./microPainter
