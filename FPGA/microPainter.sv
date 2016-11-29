@@ -20,7 +20,8 @@ module microPainter(input logic clk, reset, aUnsync, bUnsync,
 	assign countEnable = a^aDelayed^b^bDelayed;
 	assign countDirection = a^bDelayed;
 
-    logic [9:0] count;
+    // Step size
+    logic [2:0] count;
 
     always @(posedge clk)
 		begin
@@ -36,26 +37,26 @@ module microPainter(input logic clk, reset, aUnsync, bUnsync,
 
 	// For debugging purposes
 	assign debugA = read;
-	assign debugB = a;
+	assign debugB = state;
 
 	always @(posedge countEnable)
-	    begin
-		if (~reset)
-		    begin
-		        state <= 0;
-		        read <= 0;
-		    end
-		else if (count == 0)
-		    begin
-		    	read <= 1;
-		    	state <= countDirection;
-		    end
-		else
-		    begin
-		    	state <= countDirection;
-		    	read <= 0;
-		    end
-	    end
+		begin
+			if (~reset)
+				read <= 0;
+			else if (count == 0)
+				read <= 1;
+			else
+				read <= 0;
+	   end
+
+    // Update current direction
+	always @(posedge aDelayed)
+		begin
+			if (~reset)
+				state <= 0;
+			else
+				state <= countDirection;
+		end
 
 endmodule
 
