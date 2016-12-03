@@ -1,4 +1,4 @@
-# Austin Chun
+# Austin Chun & Eyassu Shimelis
 # Micro-P's Final Project
 # Convert a .png image file to a .bmp image file using PIL
 

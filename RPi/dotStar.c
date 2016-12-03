@@ -1,6 +1,6 @@
 // dotStar.c
-// Austin Chun
-// Nov. 20th, 2016
+// Austin Chun & Eyassu Shimelis
+// Dec 2nd, 2016
 // E155 Final Project
 // Implement SPI protocol with dotStar LED strip
 // APA102 datasheet: https://cdn-shop.adafruit.com/datasheets/APA102.pdf
@@ -141,25 +141,26 @@ void main(void) {
     // Update LEDs until reach end of image
     while(column < imageWidth){
 
-        // FPGA Connection
-        stepped = digitalRead(FPGA_STEPPED);
+        // // FPGA Connection
+        // stepped = digitalRead(FPGA_STEPPED);
 
-        // "Finite-State Machine" (s0: looking for posedge, s1: looking for neg edge)
-        if(!prevStep && stepped){
-            // Only update LED's when step is made
-            // if(stepped){ // YELLOW WIRE
-            //   prevStep = 1;
-            // }
-            // usleep(1000); // Wait 1ms before next sample
-            direction = digitalRead(FPGA_STEP_DIR);
-            printf("Dir: %d\n", direction);
-            if(direction) ++column; // (___) WIRE
-            else                           --column;
-        }
+        // // "Finite-State Machine" (s0: looking for posedge, s1: looking for neg edge)
+        // if(!prevStep && stepped){
+        //     // Only update LED's when step is made
+        //     // if(stepped){ // YELLOW WIRE
+        //     //   prevStep = 1;
+        //     // }
+        //     // usleep(1000); // Wait 1ms before next sample
+        //     direction = digitalRead(FPGA_STEP_DIR);
+        //     printf("Dir: %d\n", direction);
+        //     if(direction) ++column; // (___) WIRE
+        //     else                           --column;
+        // }
 
-        // printf("%s %d\n", "Column: ",column);
+        // // printf("%s %d\n", "Column: ",column);
 
-        prevStep = stepped;
+        // prevStep = stepped;
+      
       // Thus it has registered a step, and shall proceed
 
       // Update column position
@@ -167,8 +168,8 @@ void main(void) {
     //   else                           --column;
 
   // Time Stepping (just for tests)
-    //   usleep(5000); // Delay 2s
-    //   ++column; // increment column
+      usleep(5000); // Delay 2s
+      ++column; // increment column
 
       // Do nothing if out of picture frame
       if(column < 0) {

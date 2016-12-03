@@ -1,6 +1,6 @@
 // dotStar.c
-// Austin Chun
-// Nov. 20th, 2016
+// Austin Chun & Eyassu Shimelis
+// Dec 2nd, 2016
 // E155 Final Project
 // Implement SPI protocol with dotStar LED strip
 // APA102 datasheet: https://cdn-shop.adafruit.com/datasheets/APA102.pdf
@@ -149,16 +149,19 @@ void main(void) {
 
             direction = digitalRead(FPGA_STEP_DIR);
 
-            if(direction) ++column; // (___) WIRE
-            else --column;
+            // if(direction) ++column; // (___) WIRE
+            // else --column;
+            if(direction) --column; // (___) WIRE
+            else ++column;
+            printf("Col: %d\n", column);
         }
 
         // Update previous step
         prevStep = stepped;
 
         // Time Stepping (just for tests)
-        //   usleep(5000); // Delay 2s
-        //   ++column; // increment column
+          // usleep(5000); // Delay 2s
+          // ++column; // increment column
 
         // Do nothing if out of picture frame
         if(column < 0) {
