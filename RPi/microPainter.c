@@ -153,8 +153,14 @@ void main(void) {
             else --column;
         }
 
-        // Update previous step
+    	else {
+    		prevStep = stepped;
+    		continue;
+    	}
+
         prevStep = stepped;
+
+        //printf("Column %d \n", column);
 
         // Time Stepping (just for tests)
         //   usleep(5000); // Delay 2s
@@ -205,6 +211,20 @@ void main(void) {
         }
 
     }
+
+    // Turn LEDs to black
+
+    // Start Frame
+    for(i = 0; i < 4; ++i) spiSendByte(0x00);
+    // Black LED data
+    for(i = 0; i < 144; ++i){
+      spiSendByte(0xFF);
+      spiSendByte(0x00);
+      spiSendByte(0x00);
+      spiSendByte(0x00);
+    }
+    // End Frame
+    for(i = 0; i < 10; ++i) spiSendByte(0xFF);
 
     // Finished Painting
     printf("%s \n", "Finished painting picture");
