@@ -1,0 +1,49 @@
+<!doctype html>
+
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename='js/dropzone.js') }}"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>microPainter</title>
+  <meta name="description" content="microPainter">
+</head>
+
+<body>
+
+  <h1 id="siteHeader">&microPainter</h1>
+
+    <div class="container">
+      <div class="header">
+        <h3 id = "subHeader" class="text-muted">Drop an image to paint</h3>
+      </div>
+
+      <script>
+      new Dropzone(document.body, { // Make the whole body a dropzone
+        url: "/upload/url", // Set the url
+        previewsContainer: "#previews", // Define the container to display the previews
+        clickable: "#clickable" // Define the element that should be used as click trigger to select files.
+      });
+    </script>
+
+      <div id = "dropzone">
+      <form action="upload" class="dropzone"></form>
+      </div>
+      <script>
+        new Dropzone(document.body, { // Make the whole body a dropzone
+          url: "/", // Set the url
+          // url: "/upload", // Set the url
+          previewsContainer: "#previews", // Define the container to display the previews
+          clickable: "#clickable" // Define the element that should be used as click trigger to select files.
+        });
+      </script>
+
+      <div id = "fileUpload">
+      <div id="previews" class="dropzone-previews"></div>
+      </div>
+
+</body>
+
+</html>

@@ -149,16 +149,21 @@ void main(void) {
 
             direction = digitalRead(FPGA_STEP_DIR);
 
-            if(direction) ++column; // (___) WIRE
-            else --column;
+            // if(direction) ++column; // (___) WIRE
+            // else --column;
+            if(direction) --column; // (___) WIRE
+            else ++column;
             printf("Col: %d\n", column);
         }
-        else{
-            prevStrp = stepped;
+
+        else {
+            prevStep = stepped;
             continue;
         }
-        // Update previous step
+
         prevStep = stepped;
+
+        //printf("Column %d \n", column);
 
         // Time Stepping (just for tests)
           // usleep(5000); // Delay 2s
@@ -211,18 +216,31 @@ void main(void) {
     }
 
     // Turn LEDs to black
+<<<<<<< HEAD
+
+=======
     
+>>>>>>> refs/remotes/origin/master
     // Start Frame
     for(i = 0; i < 4; ++i) spiSendByte(0x00);
     // Black LED data
     for(i = 0; i < 144; ++i){
       spiSendByte(0xFF);
+<<<<<<< HEAD
+      spiSendByte(0x00);
+      spiSendByte(0x00);
+      spiSendByte(0x00);
+    }
+    // End Frame
+    for(i = 0; i < 10; ++i) spiSendByte(0xFF);
+=======
       spiSendByte(0x00);  
       spiSendByte(0x00);  
       spiSendByte(0x00);  
     } 
     // End Frame
-    for(i = 0; i < 10; ++i) spiSendByte(0xFF);
+    for(i = 0; i < 10; ++1) spiSendByte(0xFF);
+>>>>>>> refs/remotes/origin/master
 
     // Finished Painting
     printf("%s \n", "Finished painting picture");
