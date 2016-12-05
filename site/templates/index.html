@@ -1,7 +1,7 @@
 <!doctype html>
 
-<script src="js/dropzone.js"></script>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename='js/dropzone.js') }}"></script>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
 
 <html lang="en">
@@ -17,19 +17,33 @@
 
     <div class="container">
       <div class="header">
-        <h3 class="text-muted">How To Upload a File</h3>
+        <h3 id = "subHeader" class="text-muted">Drop an image to paint</h3>
       </div>
-      <hr/>
-      <div>
-      
-      <form action="upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file"><br /><br />
-        <input type="submit" value="Upload">
-      </form>
+
+      <script>
+      new Dropzone(document.body, { // Make the whole body a dropzone
+        url: "/upload/url", // Set the url
+        previewsContainer: "#previews", // Define the container to display the previews
+        clickable: "#clickable" // Define the element that should be used as click trigger to select files.
+      });
+    </script>
+
+      <div id = "dropzone">
+      <form action="upload" class="dropzone"></form>
       </div>
-    </div>
+      <script>
+        new Dropzone(document.body, { // Make the whole body a dropzone
+          url: "/", // Set the url
+          // url: "/upload", // Set the url
+          previewsContainer: "#previews", // Define the container to display the previews
+          clickable: "#clickable" // Define the element that should be used as click trigger to select files.
+        });
+      </script>
+
+      <div id = "fileUpload">
+      <div id="previews" class="dropzone-previews"></div>
+      </div>
 
 </body>
 
 </html>
-
