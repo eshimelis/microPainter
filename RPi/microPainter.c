@@ -149,13 +149,14 @@ void main(void) {
 
             direction = digitalRead(FPGA_STEP_DIR);
 
-            // if(direction) ++column; // (___) WIRE
-            // else --column;
-            if(direction) --column; // (___) WIRE
-            else ++column;
+            if(direction) ++column; // (___) WIRE
+            else --column;
             printf("Col: %d\n", column);
         }
-
+        else{
+            prevStrp = stepped;
+            continue;
+        }
         // Update previous step
         prevStep = stepped;
 
@@ -221,7 +222,7 @@ void main(void) {
       spiSendByte(0x00);  
     } 
     // End Frame
-    for(i = 0; i < 10; ++1) spiSendByte(0xFF);
+    for(i = 0; i < 10; ++i) spiSendByte(0xFF);
 
     // Finished Painting
     printf("%s \n", "Finished painting picture");
