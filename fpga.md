@@ -1,0 +1,9 @@
+Pin Assignments
+INPUT A - PIN_3
+INPUT B - PIN_7
+OUTPUT stepped - PIN_11
+OUTPUT direction - PIN_28
+CLK - PIN_88
+RESET - PIN_10
+DEBUGA - PIN_34
+DEBUGB - PIN_38
