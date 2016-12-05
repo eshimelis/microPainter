@@ -20,23 +20,21 @@ module microPainter(input logic clk, reset, aUnsync, bUnsync,
 	assign countEnable = a^aDelayed^b^bDelayed;
 	assign countDirection = a^bDelayed;
 
-    // Step size
-    logic [2:0] count;
+    logic [4:0] count;
 
     always @(posedge clk)
 		begin
 			if (~reset)
 				count <= 0;
-
 			else if (countEnable)
 				begin
 					if (countDirection) count <= count+1;
 					else count <= count-1;
-			end
+				end
 		end
-
+		
 	// For debugging purposes
-	assign debugA = read;
+	assign debugA = countEnable;
 	assign debugB = state;
 
 	always @(posedge countEnable)
@@ -48,9 +46,8 @@ module microPainter(input logic clk, reset, aUnsync, bUnsync,
 			else
 				read <= 0;
 	   end
-
-    // Update current direction
-	always @(posedge aDelayed)
+		 
+	always @(posedge a)
 		begin
 			if (~reset)
 				state <= 0;
@@ -68,7 +65,7 @@ module fflop(input logic clk, reset, d,
 	always_ff @(posedge clk)
 		if (~reset) q <= 0;
 		else
-			q <= d;
+			q <= d;	
 endmodule
 
 
@@ -78,7 +75,7 @@ module sync(input logic clk, reset, d,  // Unsynchronized input
 
 	// Logic to store intermediate value for second flop
 	logic intermediate;
-
+	
 	// Instantiate flip flops with corresponding inputs
 	fflop flopOne(clk, reset, d, intermediate);
 	fflop flopTwo(clk, reset, intermediate, q);
@@ -89,9 +86,13 @@ endmodule
 // One bit synchronizer
 module clockDelay(input logic clk, reset, d,
 		          output logic q);
-
-	always_ff @(posedge clk)
-		if (~reset) q <= 0;
-		else
-			q <= d;
+	
+	logic intermediateOne, intermediateTwo, intermediateThree;
+	
+	// Instantiate flip flops with corresponding inputs
+	fflop flopOne(clk, reset, d, intermediateOne);
+	fflop flopTwo(clk, reset, intermediateOne, intermediateTwo);
+	fflop flopThree(clk, reset, intermediateTwo, intermediateThree);
+	fflop flopFour(clk, reset, intermediateThree, q);
+	
 endmodule
