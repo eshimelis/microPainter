@@ -26,12 +26,11 @@ module microPainter(input logic clk, reset, aUnsync, bUnsync,
 		begin
 			if (~reset)
 				count <= 0;
-
 			else if (countEnable)
 				begin
 					if (countDirection) count <= count+1;
 					else count <= count-1;
-			end
+				end
 		end
 		
 	// For debugging purposes
