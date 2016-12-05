@@ -95,4 +95,5 @@ module clockDelay(input logic clk, reset, d,
 	fflop flopTwo(clk, reset, intermediateOne, intermediateTwo);
 	fflop flopThree(clk, reset, intermediateTwo, intermediateThree);
 	fflop flopFour(clk, reset, intermediateThree, q);
+	
 endmodule
