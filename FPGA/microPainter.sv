@@ -87,9 +87,12 @@ endmodule
 // One bit synchronizer
 module clockDelay(input logic clk, reset, d,
 		          output logic q);
-
-	always_ff @(posedge clk)
-		if (~reset) q <= 0;
-		else
-			q <= d;
+	
+	logic intermediateOne, intermediateTwo, intermediateThree;
+	
+	// Instantiate flip flops with corresponding inputs
+	fflop flopOne(clk, reset, d, intermediateOne);
+	fflop flopTwo(clk, reset, intermediateOne, intermediateTwo);
+	fflop flopThree(clk, reset, intermediateTwo, intermediateThree);
+	fflop flopThree(clk, reset, intermediateThree, q);
 endmodule
