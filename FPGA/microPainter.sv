@@ -24,7 +24,7 @@ module microPainter(input logic clk, reset, aUnsync, bUnsync,
 
     always @(posedge clk)
 		begin
-			if (~reset)
+			if (reset)
 				count <= 0;
 			else if (countEnable)
 				begin
@@ -39,7 +39,7 @@ module microPainter(input logic clk, reset, aUnsync, bUnsync,
 
 	always @(posedge countEnable)
 		begin
-			if (~reset)
+			if (reset)
 				read <= 0;
 			else if (count == 0)
 				read <= 1;
@@ -49,7 +49,7 @@ module microPainter(input logic clk, reset, aUnsync, bUnsync,
 		 
 	always @(posedge a)
 		begin
-			if (~reset)
+			if (reset)
 				state <= 0;
 			else
 				state <= countDirection;
@@ -63,7 +63,7 @@ module fflop(input logic clk, reset, d,
 		       output logic q);
 
 	always_ff @(posedge clk)
-		if (~reset) q <= 0;
+		if (reset) q <= 0;
 		else
 			q <= d;	
 endmodule
