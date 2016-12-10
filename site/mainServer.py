@@ -8,9 +8,10 @@ app = Flask(__name__)
 # This is the path to the upload directory
 app.config['UPLOAD_FOLDER'] = '../RPi'
 
-# Allowed extensions
+# Allowed extensions: PNG
 app.config['ALLOWED_EXTENSIONS'] = set(['png'])
 
+# Check if file is allowed (PNG)
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
