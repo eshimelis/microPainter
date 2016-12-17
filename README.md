@@ -2,7 +2,7 @@
 E155 Final Project
 
 microPainter in Action
-![demo](http://makeagif.com/i/eqlPvv)
+![demo](http://makeagif.com/i/eqlPvv.gif)
 
 Spongebob
 ![Spongebob](https://s17.postimg.org/6s5ar4vof/15388627_1388063107873247_1323620748_o.jpg "Spongebob")
